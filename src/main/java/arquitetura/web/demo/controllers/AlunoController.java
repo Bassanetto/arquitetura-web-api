@@ -30,7 +30,8 @@ public class AlunoController {
 
     @PostMapping("/adicionar")
     public Aluno adicionar(@RequestBody Aluno aluno) {
-        return alunoService.adicionar(aluno);
+        Long id = null;
+        return alunoService.adicionar(id, aluno);
     }
 
     @PutMapping("/{id}")

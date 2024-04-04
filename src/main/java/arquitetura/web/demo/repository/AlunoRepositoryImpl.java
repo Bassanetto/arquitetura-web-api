@@ -1,64 +1,68 @@
 package arquitetura.web.demo.repository;
 
 import arquitetura.web.demo.models.Aluno;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class AlunoRepositoryImpl implements AlunoRepository {
-    private final List<Aluno> alunos = new ArrayList<>();
-    private Long proximoId;
-
-    public AlunoRepositoryImpl() {
-        alunos.add(new Aluno(1L, "Luiz Obara"    , "111.111.111-11", "TEC-ADS" , 21));
-        alunos.add(new Aluno(2L, "Júlia Almeida" , "222.222.222-22", "ARQ-URB" , 20));
-        alunos.add(new Aluno(3L, "Felipe Lima"   , "333.333.333-33", "TEC-ADS" , 20));
-        alunos.add(new Aluno(4L, "Tiago Bernardo", "444.444.444-44", "ENG-PROD", 22));
-        alunos.add(new Aluno(5L, "Pedro Mattos"  , "555.555.555-55", "TEC-JGD" , 21));
-        proximoId = 6L;
+    private final JdbcTemplate jdbcTemplate;
+    public AlunoRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<Aluno> obterTodos() {
-        return alunos;
+        return jdbcTemplate.query("SELECT * FROM aluno", (resultSet, rowNum) ->
+                new Aluno(
+                        resultSet.getLong("id"),
+                        resultSet.getString("nome"),
+                        Aluno.formatCpf(resultSet.getString("documento")),
+                        resultSet.getString("curso"),
+                        resultSet.getInt("idade")
+                )
+        );
     }
 
     @Override
     public Aluno obter(Long id) {
-        return alunos.stream()
-                .filter(aluno -> aluno.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        String query = "SELECT * FROM aluno WHERE id = ?";
+
+        return jdbcTemplate.queryForObject(query, new Object[]{id}, (resultSet,  rowNum) ->
+                new Aluno(
+                        resultSet.getLong("id"),
+                        resultSet.getString("nome"),
+                        Aluno.formatCpf(resultSet.getString("documento")),
+                        resultSet.getString("curso"),
+                        resultSet.getInt("idade")
+                )
+        );
     }
 
     @Override
-    public Aluno adicionar(Aluno aluno) {
-        if (aluno.getId() == null) {
-            aluno.setId(proximoId++);
-            alunos.add(aluno);
+    public Aluno adicionar(Long id, Aluno aluno) {
+        if (id == null) {
+            String insertQuery = "INSERT INTO public.aluno (nome, documento, curso, idade) VALUES (?, ?, ?, ?)";
+            jdbcTemplate.update(insertQuery, aluno.getNome(), aluno.getDocumento(), aluno.getCurso(), aluno.getIdade());
         } else {
-            alunos.removeIf(t -> t.getId().equals(aluno.getId()));
-            alunos.add(aluno);
-        }
-        return aluno;
-    }
-
-    @Override
-    public Aluno atualizar(Long id, Aluno aluno){
-        Aluno atualizarAluno = this.obter(id);
-        if (atualizarAluno != null) {
-            alunos.set(alunos.indexOf(atualizarAluno), aluno);
+            // Sem troca de ID
+            if (this.obter(id) != null) {
+                String updateQuery = "UPDATE public.aluno SET nome = ?, documento = ?, curso = ?, idade = ? WHERE id = ?";
+                jdbcTemplate.update(updateQuery, aluno.getNome(), aluno.getDocumento(), aluno.getCurso(), aluno.getIdade(), aluno.getId());
+            } else {
+                throw new IllegalArgumentException("Não existe nenhum estudante com esse registro.");
+            }
         }
         return aluno;
     }
 
     @Override
     public Aluno excluir(Long id){
-        Aluno excluirAluno = this.obter(id);
-        if (excluirAluno != null) {
-            alunos.removeIf(aluno -> aluno.getId().equals(id));
-        }
-        return excluirAluno;
+        Aluno aluno = obter(id);
+        String deleteQuery = "DELETE FROM public.aluno WHERE id = ?";
+        jdbcTemplate.update(deleteQuery, new Object[]{id});
+        return aluno;
     }
 }

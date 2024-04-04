@@ -23,13 +23,14 @@ public class AlunoServiceImpl implements AlunoService {
     }
 
     @Override
-    public Aluno adicionar(Aluno aluno) {
-        return alunoRepository.adicionar(aluno);
+    public Aluno adicionar(Long id, Aluno aluno) {
+        aluno.setDocumento(aluno.getDocumento().replaceAll("[.-]", ""));
+        return alunoRepository.adicionar(id, aluno);
     }
 
     @Override
     public Aluno atualizar(Long id, Aluno aluno) {
-        return alunoRepository.atualizar(id, aluno);
+        return alunoRepository.adicionar(id, aluno);
     }
 
     @Override
