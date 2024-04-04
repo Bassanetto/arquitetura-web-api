@@ -1,6 +1,6 @@
 package arquitetura.web.demo.repository;
 
-import arquitetura.web.demo.model.Aluno;
+import arquitetura.web.demo.models.Aluno;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;

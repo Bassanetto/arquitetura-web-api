@@ -1,4 +1,4 @@
-package arquitetura.web.demo.model;
+package arquitetura.web.demo.models;
 
 public class Aluno {
     private Long id;

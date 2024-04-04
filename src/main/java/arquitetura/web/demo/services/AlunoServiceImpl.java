@@ -1,6 +1,6 @@
-package arquitetura.web.demo.service;
+package arquitetura.web.demo.services;
 
-import arquitetura.web.demo.model.Aluno;
+import arquitetura.web.demo.models.Aluno;
 import arquitetura.web.demo.repository.AlunoRepository;
 import org.springframework.stereotype.Service;
 

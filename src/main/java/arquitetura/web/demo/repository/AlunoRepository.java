@@ -1,6 +1,6 @@
 package arquitetura.web.demo.repository;
 
-import arquitetura.web.demo.model.Aluno;
+import arquitetura.web.demo.models.Aluno;
 
 import java.util.List;
 

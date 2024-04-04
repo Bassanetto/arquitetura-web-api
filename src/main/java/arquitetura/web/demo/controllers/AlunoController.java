@@ -1,7 +1,7 @@
-package arquitetura.web.demo.controller;
+package arquitetura.web.demo.controllers;
 
-import arquitetura.web.demo.model.Aluno;
-import arquitetura.web.demo.service.AlunoService;
+import arquitetura.web.demo.models.Aluno;
+import arquitetura.web.demo.services.AlunoService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
