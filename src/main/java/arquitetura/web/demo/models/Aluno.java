@@ -1,10 +1,29 @@
 package arquitetura.web.demo.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "aluno")
 public class Aluno {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "nome", nullable = false)
     private String nome;
+
+    @Column(name = "documento", nullable = false, unique = true)
     private String documento;
+
+    @Column(name = "curso", nullable = false)
     private String curso;
+
+    @Column(name = "idade", nullable = false)
     private int idade;
 
     public Aluno(Long id, String nome, String documento, String curso, int idade) {
@@ -14,6 +33,8 @@ public class Aluno {
         this.curso = curso;
         this.idade = idade;
     }
+
+    public Aluno() {}
 
     public Long getId() {
         return id;
