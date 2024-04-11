@@ -1,12 +1,10 @@
 package arquitetura.web.demo.repository;
 
 import arquitetura.web.demo.models.Aluno;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface AlunoRepository {
-    List<Aluno> obterTodos();
-    Aluno obter(Long id);
-    Aluno adicionar(Long id, Aluno student);
-    Aluno excluir(Long id);
-}
+@Repository
+public interface AlunoRepository extends JpaRepository<Aluno, Long> { }

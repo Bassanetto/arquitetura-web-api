@@ -1,7 +1,10 @@
 package arquitetura.web.demo.controllers;
 
+import arquitetura.web.demo.exceptions.AlunoNaoEncontradoException;
 import arquitetura.web.demo.models.Aluno;
 import arquitetura.web.demo.services.AlunoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,18 +33,21 @@ public class AlunoController {
 
     @PostMapping("/adicionar")
     public Aluno adicionar(@RequestBody Aluno aluno) {
-        Long id = null;
-        return alunoService.adicionar(id, aluno);
+        return alunoService.adicionar(aluno);
     }
 
     @PutMapping("/{id}")
-    public Aluno atualizar(@PathVariable Long id, @RequestBody Aluno atualizar){
-        return alunoService.atualizar(id, atualizar);
+    public Aluno atualizar(@RequestBody Aluno atualizar){
+        return alunoService.atualizar(atualizar);
     }
 
-    @DeleteMapping("/{id}")
-    public Aluno excluir(@PathVariable Long id) {
-        return alunoService.excluir(id);
+    public ResponseEntity<String> excluir(@PathVariable Long id) {
+        try {
+            alunoService.excluir(id);
+            return ResponseEntity.ok("Item deletado com sucesso!");
+        } catch (AlunoNaoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }
