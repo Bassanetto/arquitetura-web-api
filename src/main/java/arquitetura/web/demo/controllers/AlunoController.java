@@ -50,4 +50,29 @@ public class AlunoController {
         }
     }
 
+    @GetMapping("/obter-alunos-por-curso/{id}")
+    public List<Aluno> ObterAlunosPorCursoId(@PathVariable Long id) {
+        return alunoService.obterAlunosPorCurso(id);
+    }
+
+    @GetMapping("/obter-alunos-por-curso-nome/{nome}")
+    public List<Aluno> obterAlunosPorCursoNome(@PathVariable String nome) {
+        return alunoService.obterAlunosPorCursoNome(nome);
+    }
+
+    @GetMapping("/obter-alunos-por-curso-nome-parcial/{nomeParcial}")
+    public List<Aluno> obterAlunosPorCursoNomeParcial(@PathVariable String nomeParcial) {
+        return alunoService.obterAlunosPorCursoNomeParcial(nomeParcial);
+    }
+
+    @GetMapping("/contar-aluno-por-curso/{cursoId}")
+    public Long contarAlunoPorCursoId(@PathVariable Long cursoId) {
+        return alunoService.contarAlunoPorCursoId(cursoId);
+    }
+
+    @GetMapping("/contar-aluno-por-curso-nome-parcial/{nomeParcial}")
+    public Long contarAlunoPorCursoNomeParcial(@PathVariable String nomeParcial) {
+        return alunoService.contarAlunoPorCursoNomeParcial(nomeParcial);
+    }
+
 }

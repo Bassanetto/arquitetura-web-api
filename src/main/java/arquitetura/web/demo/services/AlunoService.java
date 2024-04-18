@@ -9,4 +9,9 @@ public interface AlunoService {
     Aluno adicionar(Aluno aluno);
     Aluno atualizar(Aluno aluno);
     void excluir(Long id);
+    List<Aluno> obterAlunosPorCurso(Long categoriaId);
+    List<Aluno> obterAlunosPorCursoNome(String nomeCategoria);
+    List<Aluno> obterAlunosPorCursoNomeParcial(String nomeCursoParcial);
+    Long contarAlunoPorCursoId(Long categoriaId);
+    Long contarAlunoPorCursoNomeParcial(String nomeCursoParcial);
 }

@@ -2,7 +2,7 @@ package arquitetura.web.demo.services;
 
 import arquitetura.web.demo.exceptions.AlunoNaoEncontradoException;
 import arquitetura.web.demo.models.Aluno;
-import arquitetura.web.demo.repository.AlunoRepository;
+import arquitetura.web.demo.models.AlunoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +45,30 @@ public class AlunoServiceImpl implements AlunoService {
             throw new AlunoNaoEncontradoException("O aluno com ID: " + id + " não foi encontrada.");
 
         alunoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Aluno> obterAlunosPorCurso(Long categoriaId) {
+        return alunoRepository.findByCursoId(categoriaId);
+    }
+
+    @Override
+    public List<Aluno> obterAlunosPorCursoNome(String cursoNome) {
+        return alunoRepository.findByCursoNome(cursoNome);
+    }
+
+    @Override
+    public List<Aluno> obterAlunosPorCursoNomeParcial(String nomeParcialCategoria) {
+        return alunoRepository.findByCursoNomeContaining(nomeParcialCategoria);
+    }
+
+    @Override
+    public Long contarAlunoPorCursoId(Long categoriaId) {
+        return alunoRepository.contarAlunoPorCursoId(categoriaId);
+    }
+
+    @Override
+    public Long contarAlunoPorCursoNomeParcial(String nomeParcial) {
+        return alunoRepository.contarAlunoPorCursoNomeParcial(nomeParcial);
     }
 }
